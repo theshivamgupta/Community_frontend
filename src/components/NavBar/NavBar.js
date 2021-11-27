@@ -29,7 +29,7 @@ const Navbar = () => {
         {isAuth && (
           <div className="gpt3__navbar-links_container">
             <p>
-              <a href="#home">Home</a>
+              <Link to={"/dash"}>Home</Link>
             </p>
             {/* <p>
               <a href="#wgpt3">What is GPT3?</a>
@@ -110,7 +110,7 @@ const Navbar = () => {
           )}
           <div
             onClick={() => {
-              console.log("iage clicked");
+              // console.log("iage clicked");
               // setToggleMenu(true);
               setOpenPopover(!openPopover);
             }}
@@ -194,7 +194,7 @@ const Navbar = () => {
           )}
           {toggleMenu && (
             <div className="gpt3__navbar-menu_container scale-up-center">
-              {console.log({ toggleMenu })}
+              {/* {console.log({ toggleMenu })} */}
               <div className="gpt3__navbar-menu_container-links">
                 <p>
                   <a href="#home">Home</a>

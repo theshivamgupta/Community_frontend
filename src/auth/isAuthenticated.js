@@ -1,10 +1,7 @@
-import Cookies from "js-cookie";
-
 export const isAuthenticated = () => {
-  const token = {
-    refreshToken: Cookies.get("refresh-token"),
-    accessToken: Cookies.get("access-token"),
-  };
-  // console.log(token.accessToken);
-  return !!token.accessToken;
+  let accessToken = null;
+  if (localStorage.getItem("access-token")) {
+    accessToken = localStorage.getItem("access-token");
+  }
+  return !!accessToken;
 };

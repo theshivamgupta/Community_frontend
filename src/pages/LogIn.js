@@ -3,7 +3,6 @@ import {
   Button,
   Card,
   CardHeader,
-  Hidden,
   InputAdornment,
   TextField,
   Typography,
@@ -24,25 +23,39 @@ const LogIn = () => {
   });
   const [showPassword, setPasswordVisibility] = React.useState(false);
   const [error, setError] = React.useState(false);
+  const [verify, setVerify] = React.useState(false);
   //   const [verifyError, setVerifyError] = React.useState(false);
-  const [login] = useMutation(LOGIN_USER);
+  // eslint-disable-next-line no-unused-vars
+  const [login, { data }] = useMutation(LOGIN_USER, {
+    onCompleted: (data) => {
+      if (!data.login.user.confirmed) {
+        setVerify(true);
+      } else {
+        if (typeof window !== undefined) {
+          localStorage.setItem("access-token", data.login.accessToken);
+          localStorage.setItem("refresh-token", data.login.refreshToken);
+          navigate("/dash");
+          window.location.reload();
+        }
+      }
+    },
+  });
   const hasPassword = Boolean(watch("password"));
 
   function togglePasswordVisibility() {
     setPasswordVisibility((prev) => !prev);
   }
 
-  async function onSubmit(data) {
-    console.log(data);
+  async function onSubmit(d) {
+    // console.log(d);
     const variables = {
-      email: data.input,
-      password: data.password,
+      email: d.input,
+      password: d.password,
     };
     try {
       await login({ variables });
-      navigate("/dash");
     } catch (error) {
-      console.log({ error });
+      // console.log({ error });
       setError(true);
     }
   }
@@ -53,11 +66,15 @@ const LogIn = () => {
   //     }
   //     setVerifyError(false);
   //   };
+
   return (
     <>
       <SEO title="Login" />
       {error && (
         <ErrorAlert message={"Invalid Credentials"} setError={setError} />
+      )}
+      {verify && (
+        <ErrorAlert message={"Verify your Account"} setError={setVerify} />
       )}
       <div className="container">
         <section className={classes.section}>

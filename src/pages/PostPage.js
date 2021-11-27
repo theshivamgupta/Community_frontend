@@ -8,11 +8,9 @@ import { GET_POST_BY_ID, GET_USER_BY_ID } from "../graphql/query";
 import ReactMarkdown from "react-markdown";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Avatar } from "@mui/material";
 import rehypeRaw from "rehype-raw";
 import Comment from "../components/Comment/Comment";
-import { formatPostDate } from "../assets/utils/formatDate";
 
 const PostPage = () => {
   const { postId } = useParams();
@@ -38,6 +36,7 @@ const PostPage = () => {
       }
     }
     fetchUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 
   return (

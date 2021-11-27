@@ -1,16 +1,11 @@
 import React from "react";
 
-import Button from "@mui/material/Button";
-import Avatar from "@mui/material/Avatar";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
-import PersonIcon from "@mui/icons-material/Person";
-import AddIcon from "@mui/icons-material/Add";
-import Typography from "@mui/material/Typography";
 import { myContext } from "../../context/NewPostContext";
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_ALL_FLAGGED_COMMENTS } from "../../graphql/query";
@@ -21,11 +16,9 @@ import rehypeRaw from "rehype-raw";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { DELETE_FLAG_COMMENT } from "../../graphql/mutations";
 
-const emails = ["username@gmail.com", "user02@gmail.com"];
-
 const FlagPostModal = () => {
   const { flagModal, handleFlagModal } = React.useContext(myContext);
-  const { data, loading, error, refetch } = useQuery(GET_ALL_FLAGGED_COMMENTS);
+  const { data, loading, refetch } = useQuery(GET_ALL_FLAGGED_COMMENTS);
   const [deleteFlaggedComment] = useMutation(DELETE_FLAG_COMMENT);
   const [selectedValue, setSelectedValue] = React.useState(null);
   if (loading) {
@@ -40,7 +33,7 @@ const FlagPostModal = () => {
         commentId: selectedValue,
       };
       await deleteFlaggedComment({ variables });
-      console.log("flagged comment deleted");
+      // console.log("flagged comment deleted");
       refetch();
     }
   }
@@ -69,7 +62,7 @@ const FlagPostModal = () => {
                 <Checkbox
                   onChange={(e) => {
                     e.preventDefault();
-                    console.log(comment?.id);
+                    // console.log(comment?.id);
                     setSelectedValue(comment?.id);
                   }}
                 />
@@ -116,70 +109,10 @@ const FlagPostModal = () => {
               />
             </ListItem>
           ))}
-
-          <ListItem
-            autoFocus
-            button
-            //   onClick={() => handleListItemClick("addAccount")}
-          >
-            <ListItemAvatar>
-              <Avatar>
-                <AddIcon />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary="Add account" />
-          </ListItem>
         </List>
       </Dialog>
     </>
   );
 };
-
-function SimpleDialog(props) {
-  const { onClose, selectedValue, open } = props;
-
-  const handleClose = () => {
-    onClose(selectedValue);
-  };
-
-  const handleListItemClick = (value) => {
-    onClose(value);
-  };
-
-  return (
-    <Dialog onClose={handleClose} open={open}>
-      <DialogTitle>Set backup account</DialogTitle>
-      <List sx={{ pt: 0 }}>
-        {emails.map((email) => (
-          <ListItem
-            button
-            onClick={() => handleListItemClick(email)}
-            key={email}
-          >
-            <ListItemAvatar>
-              <Avatar sx={{ bgcolor: "blue", color: "blue" }}>
-                <PersonIcon />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary={email} />
-          </ListItem>
-        ))}
-
-        <ListItem
-          autoFocus
-          button
-          onClick={() => handleListItemClick("addAccount")}
-        >
-          <ListItemAvatar>
-            <Avatar>
-              <AddIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary="Add account" />
-        </ListItem>
-      </List>
-    </Dialog>
-  );
-}
 
 export default FlagPostModal;

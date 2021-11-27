@@ -1,4 +1,4 @@
-import { useQuery, useSubscription } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
@@ -6,7 +6,6 @@ import { isAuthenticated } from "./auth/isAuthenticated";
 import PrivateRoute from "./auth/PrivateRoute";
 import NewPostContext from "./context/NewPostContext";
 import { ME } from "./graphql/query";
-import { CURRENT_USER } from "./graphql/subscription";
 import DashBoard from "./pages/DashBoard";
 import HomePage from "./pages/HomePage";
 import LogIn from "./pages/LogIn";
@@ -17,7 +16,7 @@ import SignUp from "./pages/SignUp";
 export const UserContext = React.createContext();
 function App() {
   const { data, loading } = useQuery(ME);
-  const current = useSubscription(CURRENT_USER);
+  // const current = useSubscription(CURRENT_USER);
   if (loading) {
     return (
       <h1
@@ -35,9 +34,8 @@ function App() {
     );
   }
   const isAuth = isAuthenticated();
-  const me =
-    isAuth && current?.data?.currentUser ? current?.data?.currentUser : null;
-  console.log({ me });
+  const me = isAuth && data?.me ? data?.me : null;
+  // console.log({ me });
   const currentUserId = me?.id;
   const postIds = me?.posts;
 

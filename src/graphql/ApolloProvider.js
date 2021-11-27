@@ -7,16 +7,15 @@ import {
 import { setContext } from "@apollo/client/link/context";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "@apollo/client/link/ws";
-
-import Cookies from "js-cookie";
+// https://communitybackend.herokuapp.com/graphql
 
 const httpLink = createHttpLink({
-  uri: "http://localhost:4000/graphql",
+  uri: "https://communitybackend.herokuapp.com/graphql",
   credentials: "include",
 });
 
 const wsLink = new WebSocketLink({
-  uri: "ws://localhost:4000/graphql",
+  uri: "wss://communitybackend.herokuapp.com/graphql",
   options: {
     reconnect: true,
     timeout: 3000,
@@ -24,7 +23,7 @@ const wsLink = new WebSocketLink({
 });
 
 const authLink = setContext((_, { headers }) => {
-  const token = Cookies.get("access-token");
+  const token = localStorage.getItem("access-token");
   return {
     headers: {
       ...headers,

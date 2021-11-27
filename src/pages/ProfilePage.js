@@ -12,7 +12,6 @@ import {
 import React from "react";
 import Navbar from "../components/NavBar/NavBar";
 import SEO from "../components/shared/SEO";
-import UserCard from "../components/Post/UserCard";
 import FeedPostSkeleton from "../components/Post/FeedPostSkeleton";
 // import UserStackCard from "../components/Profile/UserStackCard";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -29,13 +28,9 @@ const ProfilePage = () => {
   const variables = {
     id: userId,
   };
-  const { data, loading, error } = useQuery(GET_USER_BY_ID, { variables });
-  console.log(data);
-  const [activeTab, setActiveTab] = React.useState({
-    profile: true,
-    followers: false,
-    followings: false,
-  });
+  const { data, loading } = useQuery(GET_USER_BY_ID, { variables });
+  // console.log(data);
+
   if (loading) {
     <h1 className="text-white">Loading...</h1>;
   }
@@ -200,7 +195,7 @@ function ProfileMainCard({ user, isOwner }) {
             xs={12}
           >
             <Tabs
-              //   value={value}
+              value={"Profile"}
               //   onChange={handleChange}
               indicatorColor="primary"
               textColor="primary"

@@ -13,13 +13,11 @@ import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { useMutation, useQuery } from "@apollo/client";
 import { CREATE_COMMENT } from "../../graphql/mutations";
 import { Avatar } from "@mui/material";
-import { GET_USER_BY_ID, GET_ALL_POST_COMMENTS } from "../../graphql/query";
+import { GET_USER_BY_ID } from "../../graphql/query";
 import { formatDateToNow } from "../../assets/utils/formatDate";
 import { BiDotsVerticalRounded } from "react-icons/bi";
-import { COMMENT_ADDED } from "../../graphql/subscription";
 import OptionsDialog from "../shared/OptionsDialog";
 import EmojiFlagsIcon from "@mui/icons-material/EmojiFlags";
-import ErrorAlert from "../shared/ErrorAlert";
 
 const initialValue = [
   {
@@ -37,9 +35,7 @@ const Comment = ({ post }) => {
 
   const [createComment] = useMutation(CREATE_COMMENT);
   // const {subscribeToMore, ...result} = useQuery(GET_ALL_POST_COMMENTS, va);
-  const variables = {
-    postId: post?.id,
-  };
+
   // const { subscribeToMore, ...result } = useQuery(GET_ALL_POST_COMMENTS, {
   //   variables,
   // });
@@ -51,7 +47,8 @@ const Comment = ({ post }) => {
     };
     await createComment({ variables });
     console.log("comment added successfully");
-    // window.location.reload();
+    window.location.reload();
+    window.location.reload();
   }
 
   return (
@@ -224,7 +221,6 @@ function CommentList({ post }) {
 
 function CommentItem({ comment }) {
   const [openDialog, setOpenDialog] = React.useState(false);
-  const [error, setError] = React.useState(false);
   const variables = {
     id: comment?.userId,
   };
@@ -242,18 +238,8 @@ function CommentItem({ comment }) {
 
   return (
     <>
-      {setError && (
-        <ErrorAlert
-          message={"Comment Flagged. Reload to See"}
-          setError={setError}
-        />
-      )}
       {openDialog && (
-        <OptionsDialog
-          model={comment}
-          onClose={handleOpenDialog}
-          setError={setError}
-        />
+        <OptionsDialog model={comment} onClose={handleOpenDialog} />
       )}
       <div className="flex flex-row py-6 px-4 rounded-lg bg-opacity-100 bg-gray-900">
         <div className="w-10 h-10 mr-2 flex-shrink-0">

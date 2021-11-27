@@ -8,15 +8,12 @@ import {
   Typography,
 } from "@mui/material";
 import { useFeedPostsStyles } from "../../styles";
-import { useQuery } from "@apollo/client";
-import { GET_USER_BY_ID, GET_USER_VIA_POST } from "../../graphql/query";
 import { FaRegComment } from "react-icons/fa";
 import { formatDateToNow } from "../../assets/utils/formatDate";
 import { Link } from "react-router-dom";
 
 const PostCard = ({ post, user }) => {
   const classes = useFeedPostsStyles();
-  const variables = { id: post?.userId };
   // const { data, error } = useQuery(GET_USER_VIA_POST, { variables });
   // console.log("! ", data, error);
   // const user = data?.getUserById;

@@ -55,7 +55,7 @@ const AddPostDialog = () => {
       title,
       content: md,
     };
-    console.log({ variables });
+    // console.log({ variables });
     try {
       await createPost({ variables });
     } catch (error) {
@@ -112,7 +112,7 @@ const AddPostDialog = () => {
                       id="formGroupExampleInput"
                       placeholder="Enter Title Here..."
                       onChange={(e) => {
-                        console.log(e.target.value);
+                        // console.log(e.target.value);
                         setTitle(e.target.value);
                       }}
                     />

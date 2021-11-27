@@ -17,19 +17,21 @@ import { useMutation, useApolloClient } from "@apollo/client";
 import { CREATE_USER } from "../graphql/mutations";
 import { CHECK_IF_USERNAME_EMAIL_EXISTS } from "../graphql/query";
 import ErrorAlert from "../components/shared/ErrorAlert";
+import SuccessAlert from "../components/shared/SuccessAlert";
 
 const affiliations = ["Teacher", "Student"];
 
 const SignUp = () => {
   const client = useApolloClient();
   const [affilation, setAffilation] = React.useState("");
-  const [error, setError] = React.useState(false);
+  const [error, setError] = React.useState("");
+  const [success, setSuccess] = React.useState(false);
   const classes = useSignUpPageStyles();
-  const { handleSubmit, control } = useForm({
+  const { handleSubmit, control, reset } = useForm({
     mode: "onBlur",
   });
 
-  const [createUser] = useMutation(CREATE_USER);
+  const [createUser, payload] = useMutation(CREATE_USER);
 
   //   console.log(formState.errors);
 
@@ -38,13 +40,11 @@ const SignUp = () => {
   }
 
   async function onSubmit(data) {
-    // console.log(data);
-
     let variables = {
       cred: data.email,
     };
 
-    let emailResponse = client.query({
+    let emailResponse = await client.query({
       query: CHECK_IF_USERNAME_EMAIL_EXISTS,
       variables,
     });
@@ -53,13 +53,12 @@ const SignUp = () => {
       cred: data.username,
     };
 
-    let usernameResponse = client.query({
+    let usernameResponse = await client.query({
       query: CHECK_IF_USERNAME_EMAIL_EXISTS,
       variables,
     });
-
-    if (usernameResponse || emailResponse) {
-      setError(true);
+    if (usernameResponse.data.ifUserExists || emailResponse.data.ifUserExists) {
+      setError("Email/Username already Exists");
       return;
     }
 
@@ -72,18 +71,29 @@ const SignUp = () => {
       lastName: data.name.split(" ")[1],
       moderatorLevel: affilation === "Teacher" ? 0 : 2,
     };
-    console.log(variables);
+    // console.log(variables);
     await createUser({ variables });
-    console.log("added successfully");
+    if (payload.error) {
+      setError("Something Occurred!!");
+    }
+    setSuccess(true);
+    reset({
+      email: "",
+      name: "",
+      password: "",
+      username: "",
+    });
+    setAffilation("");
   }
 
   return (
     <>
       <SEO title="Sign up" />
-      {error && (
-        <ErrorAlert
-          message={"Email/Username already Exists"}
-          setError={setError}
+      {error && <ErrorAlert message={error} setError={setError} />}
+      {success && (
+        <SuccessAlert
+          message={"Verification Email Sent"}
+          setError={setSuccess}
         />
       )}
       {/* <img src={logo} alt="logo" style={{ margin: "auto" }} /> */}
