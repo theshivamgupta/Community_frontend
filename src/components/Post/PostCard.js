@@ -11,7 +11,7 @@ import { useFeedPostsStyles } from "../../styles";
 import { FaRegComment } from "react-icons/fa";
 import { formatDateToNow } from "../../assets/utils/formatDate";
 import { Link } from "react-router-dom";
-
+import defaultImage from "../../assets/images/defaultImage.jpg";
 const PostCard = ({ post, user }) => {
   const classes = useFeedPostsStyles();
   // const { data, error } = useQuery(GET_USER_VIA_POST, { variables });
@@ -25,11 +25,7 @@ const PostCard = ({ post, user }) => {
             <Avatar
               className={classes.avatar}
               alt="Remy Sharp"
-              src={
-                user?.profileImage
-                  ? user?.profileImage
-                  : "https://thispersondoesnotexist.com/image"
-              }
+              src={user?.profileImage ? user?.profileImage : defaultImage}
             />
             <Hidden smDown>
               <Typography className={classes.user} variant="caption">
