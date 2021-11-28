@@ -29,6 +29,7 @@ const Navbar = () => {
           localStorage.removeItem("access-token");
           localStorage.removeItem("refresh-token");
           navigate("/");
+          window.location.reload();
         }
       }
     },
