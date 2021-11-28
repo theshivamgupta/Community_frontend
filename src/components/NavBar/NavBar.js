@@ -93,7 +93,7 @@ const Navbar = () => {
             <>
               <button
                 type="button"
-                class="btn btn-outline-info mr-6 flag__container"
+                className="btn btn-outline-info mr-6 flag__container"
                 onClick={handleStudentModal}
               >
                 Assign Power
@@ -203,13 +203,22 @@ const Navbar = () => {
             <div className="gpt3__navbar-menu_container-links">
               <p>
                 {me?.moderatorLevel <= 1 && (
-                  <button
-                    type="button"
-                    className="btn btn-outline-danger"
-                    onClick={handleFlagModal}
-                  >
-                    Flagged Comment
-                  </button>
+                  <>
+                    <button
+                      type="button"
+                      className="btn btn-outline-info m-auto mb-4"
+                      onClick={handleStudentModal}
+                    >
+                      Assign Power
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-outline-danger"
+                      onClick={handleFlagModal}
+                    >
+                      Flagged Comment
+                    </button>
+                  </>
                 )}
               </p>
             </div>

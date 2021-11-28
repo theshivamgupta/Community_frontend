@@ -10,12 +10,12 @@ import { WebSocketLink } from "@apollo/client/link/ws";
 // https://communitybackend.herokuapp.com/graphql
 
 const httpLink = createHttpLink({
-  uri: "https://communitybackend.herokuapp.com/graphql",
+  uri: "http://localhost:4000/graphql",
   credentials: "include",
 });
 
 const wsLink = new WebSocketLink({
-  uri: "wss://communitybackend.herokuapp.com/graphql",
+  uri: "ws://localhost:4000/graphql",
   options: {
     reconnect: true,
     timeout: 3000,

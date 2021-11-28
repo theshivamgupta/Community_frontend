@@ -1,8 +1,10 @@
 import React from "react";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { GET_ALL_STUDENTS } from "../../graphql/query";
+import { INCREASE_USER_POWER } from "../../graphql/mutations";
 import { myContext } from "../../context/NewPostContext";
 import {
+  Avatar,
   Checkbox,
   Dialog,
   DialogTitle,
@@ -10,21 +12,31 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  Typography,
 } from "@mui/material";
+import defaultImage from "../../assets/images/defaultImage.jpg";
 
 const StudentModal = () => {
-  const { data, loading } = useQuery(GET_ALL_STUDENTS);
+  const { data, loading, refetch } = useQuery(GET_ALL_STUDENTS);
   const { studentModal, handleStudentModal } = React.useContext(myContext);
   // eslint-disable-next-line no-unused-vars
   const [selectedValue, setSelectedValue] = React.useState(null);
-  console.log(data);
-
+  const [increasePower] = useMutation(INCREASE_USER_POWER);
   if (loading) {
     return <h1>Loading...</h1>;
   }
 
   const users = data?.getStudentUsers;
-  function handlePowerUser(e) {}
+  async function handlePowerUser(e) {
+    e.preventDefault();
+    if (selectedValue) {
+      const variables = {
+        id: selectedValue,
+      };
+      await increasePower({ variables });
+      refetch();
+    }
+  }
 
   return (
     <>
@@ -53,9 +65,17 @@ const StudentModal = () => {
               </ListItemAvatar>
               <ListItemText
                 primary={
-                  <>
-                    <h1>{user?.id}</h1>
-                  </>
+                  <div className="flex">
+                    <Avatar
+                      src={
+                        user?.profileImage ? user?.profileImage : defaultImage
+                      }
+                      className="mr-4"
+                    />
+                    <Typography variant="h6" gutterBottom component="span">
+                      {user.firstName} {user?.lastName} ({user?.username})
+                    </Typography>
+                  </div>
                 }
               />
             </ListItem>

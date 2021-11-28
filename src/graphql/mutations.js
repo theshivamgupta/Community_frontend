@@ -52,6 +52,15 @@ export const UPDATE_PROFILE_IMAGE = gql`
   }
 `;
 
+export const INCREASE_USER_POWER = gql`
+  mutation ($id: ID!) {
+    increasePower(id: $id) {
+      id
+      moderatorLevel
+    }
+  }
+`;
+
 export const CREATE_POST = gql`
   mutation ($postImage: String!, $title: String!, $content: String!) {
     createPost(postImage: $postImage, title: $title, content: $content) {
