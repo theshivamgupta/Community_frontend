@@ -81,7 +81,7 @@ const AddPostDialog = () => {
             <div
               style={{
                 height: "50vh",
-                position: "absolute",
+                position: "fixed",
                 width: "100%",
                 bottom: 0,
                 borderRadius: "7px",
@@ -206,6 +206,7 @@ const AddPostDialog = () => {
                     children={serialiseMd(value)}
                     transformImageUri={(uri) => uri}
                     rehypePlugins={[rehypeRaw]}
+                    className="prose"
                     components={{
                       code({ node, inline, className, children, ...props }) {
                         const match = /language-(\w+)/.exec(className || "");

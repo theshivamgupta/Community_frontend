@@ -8,6 +8,7 @@ import { useQuery } from "@apollo/client";
 import { GET_ALL_POSTS } from "../graphql/query";
 import FeedPostSkeleton from "../components/Post/FeedPostSkeleton";
 import FlagPostModal from "../components/shared/FlagPostModal";
+import StudentModal from "../components/shared/StudentModal";
 
 const DashBoard = () => {
   const { data, loading } = useQuery(GET_ALL_POSTS);
@@ -32,6 +33,7 @@ const DashBoard = () => {
       {/* <FeedPostSkeleton /> */}
       <AddPostDialog />
       <FlagPostModal />
+      <StudentModal />
     </>
   );
 };

@@ -96,10 +96,10 @@ const SignUp = () => {
           setError={setSuccess}
         />
       )}
-      {/* <img src={logo} alt="logo" style={{ margin: "auto" }} /> */}
       <section className={classes.section}>
         <article>
           <Card className={classes.card}>
+            {/* <img src={logo} alt="logo" style={{ margin: "auto" }} /> */}
             <div className={classes.cardHeader} />
             <Typography className={classes.cardHeaderSubHeader}>
               Sign up to Post Questions and help someone else

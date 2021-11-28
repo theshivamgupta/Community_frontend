@@ -1,9 +1,7 @@
 import {
   Avatar,
-  Button,
   Container,
   Grid,
-  Hidden,
   Paper,
   Tab,
   Tabs,
@@ -14,14 +12,14 @@ import Navbar from "../components/NavBar/NavBar";
 import SEO from "../components/shared/SEO";
 import FeedPostSkeleton from "../components/Post/FeedPostSkeleton";
 // import UserStackCard from "../components/Profile/UserStackCard";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { Link } from "react-router-dom";
 import { useParams } from "react-router";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { GET_USER_BY_ID } from "../graphql/query";
 import { UserContext } from "../App";
 import "./profile.css";
 import PostCard from "../components/Post/PostCard";
+import { handleImageUpload } from "../assets/utils/handleImageUpload";
+import { UPDATE_PROFILE_IMAGE } from "../graphql/mutations";
 
 const ProfilePage = () => {
   const { userId } = useParams();
@@ -55,7 +53,7 @@ const ProfilePage = () => {
             {user?.posts.map((post) => {
               return (
                 <React.Suspense key={post?.id} fallback={<FeedPostSkeleton />}>
-                  <div className="my-10">
+                  <div className="my-10 overflow-hidden">
                     <PostCard post={post} user={user} />
                   </div>
                 </React.Suspense>
@@ -72,6 +70,20 @@ function ProfileMainCard({ user, isOwner }) {
   const coverImgRef = React.useRef(null);
   const bannerImage =
     "https://img5.goodfon.com/wallpaper/nbig/7/64/abstract-background-rounded-shapes-colorful-abstraktsiia-tek.jpg";
+
+  const [updateProfileImage] = useMutation(UPDATE_PROFILE_IMAGE);
+
+  async function handleUpdateProfilePic(e) {
+    e.preventDefault();
+    // console.log(e.target.files[0]);
+    const file = e.target.files[0];
+    let url = await handleImageUpload(file);
+    const variables = {
+      profileImage: url,
+    };
+    await updateProfileImage({ variables });
+  }
+
   return (
     <div>
       <Paper className="covercard">
@@ -95,7 +107,7 @@ function ProfileMainCard({ user, isOwner }) {
               ref={coverImgRef}
               className="hidden"
               accept="image/*"
-              //   onChange={handleUpdateProfilePic}
+              onChange={handleUpdateProfilePic}
             />
           )}
           <Grid
@@ -141,51 +153,6 @@ function ProfileMainCard({ user, isOwner }) {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid
-                // className={classes.coverButtons}
-                className="coverButtons-main"
-                item
-                xs={1}
-                md={3}
-              >
-                <div
-                  // className={classes.editprofile}
-                  className="editprofile-main"
-                >
-                  <Hidden smDown>
-                    {isOwner && (
-                      <Link to="/accounts/edit">
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          startIcon={<EditOutlinedIcon />}
-                        >
-                          Edit Profile
-                        </Button>
-                      </Link>
-                    )}
-                  </Hidden>
-                  <div
-                  // onClick={() => setShowOption((prev) => !prev)}
-                  >
-                    <svg
-                      aria-label="Options"
-                      // className={classes.settings}
-                      className="settings-main"
-                      fill="#262626"
-                      height="24"
-                      viewBox="0 0 48 48"
-                      width="24"
-                    >
-                      <path
-                        clipRule="evenodd"
-                        d="M46.7 20.6l-2.1-1.1c-.4-.2-.7-.5-.8-1-.5-1.6-1.1-3.2-1.9-4.7-.2-.4-.3-.8-.1-1.2l.8-2.3c.2-.5 0-1.1-.4-1.5l-2.9-2.9c-.4-.4-1-.5-1.5-.4l-2.3.8c-.4.1-.8.1-1.2-.1-1.4-.8-3-1.5-4.6-1.9-.4-.1-.8-.4-1-.8l-1.1-2.2c-.3-.5-.8-.8-1.3-.8h-4.1c-.6 0-1.1.3-1.3.8l-1.1 2.2c-.2.4-.5.7-1 .8-1.6.5-3.2 1.1-4.6 1.9-.4.2-.8.3-1.2.1l-2.3-.8c-.5-.2-1.1 0-1.5.4L5.9 8.8c-.4.4-.5 1-.4 1.5l.8 2.3c.1.4.1.8-.1 1.2-.8 1.5-1.5 3-1.9 4.7-.1.4-.4.8-.8 1l-2.1 1.1c-.5.3-.8.8-.8 1.3V26c0 .6.3 1.1.8 1.3l2.1 1.1c.4.2.7.5.8 1 .5 1.6 1.1 3.2 1.9 4.7.2.4.3.8.1 1.2l-.8 2.3c-.2.5 0 1.1.4 1.5L8.8 42c.4.4 1 .5 1.5.4l2.3-.8c.4-.1.8-.1 1.2.1 1.4.8 3 1.5 4.6 1.9.4.1.8.4 1 .8l1.1 2.2c.3.5.8.8 1.3.8h4.1c.6 0 1.1-.3 1.3-.8l1.1-2.2c.2-.4.5-.7 1-.8 1.6-.5 3.2-1.1 4.6-1.9.4-.2.8-.3 1.2-.1l2.3.8c.5.2 1.1 0 1.5-.4l2.9-2.9c.4-.4.5-1 .4-1.5l-.8-2.3c-.1-.4-.1-.8.1-1.2.8-1.5 1.5-3 1.9-4.7.1-.4.4-.8.8-1l2.1-1.1c.5-.3.8-.8.8-1.3v-4.1c.4-.5.1-1.1-.4-1.3zM24 41.5c-9.7 0-17.5-7.8-17.5-17.5S14.3 6.5 24 6.5 41.5 14.3 41.5 24 33.7 41.5 24 41.5z"
-                        fillRule="evenodd"
-                      ></path>
-                    </svg>
-                  </div>
-                </div>
-              </Grid>
             </Grid>
           </Grid>
           <Grid
@@ -195,7 +162,7 @@ function ProfileMainCard({ user, isOwner }) {
             xs={12}
           >
             <Tabs
-              value={"Profile"}
+              value={0}
               //   onChange={handleChange}
               indicatorColor="primary"
               textColor="primary"

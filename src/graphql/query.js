@@ -45,6 +45,20 @@ export const GET_USER_BY_ID = gql`
   }
 `;
 
+export const GET_ALL_STUDENTS = gql`
+  query {
+    getStudentUsers {
+      id
+      confirmed
+      profileImage
+      moderatorLevel
+      username
+      firstName
+      lastName
+    }
+  }
+`;
+
 export const GET_USER_VIA_POST = gql`
   query ($id: String!) {
     getUserById(id: $id) {

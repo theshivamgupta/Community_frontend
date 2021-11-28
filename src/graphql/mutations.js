@@ -43,6 +43,15 @@ export const LOGIN_USER = gql`
   }
 `;
 
+export const UPDATE_PROFILE_IMAGE = gql`
+  mutation ($profileImage: String!) {
+    updateProfileImage(profileImage: $profileImage) {
+      id
+      profileImage
+    }
+  }
+`;
+
 export const CREATE_POST = gql`
   mutation ($postImage: String!, $title: String!, $content: String!) {
     createPost(postImage: $postImage, title: $title, content: $content) {

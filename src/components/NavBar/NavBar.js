@@ -4,11 +4,11 @@ import { RiMenu3Line, RiCloseLine } from "react-icons/ri";
 /* import logo from '../../logo.svg'; */
 import { Link, useLocation } from "react-router-dom";
 import { isAuthenticated } from "../../auth/isAuthenticated";
-import logo from "../../logo.svg";
 import defaultImage from "../../assets/images/defaultImage.jpg";
 import { UserContext } from "../../App";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import { myContext } from "../../context/NewPostContext";
+import favicon1 from "../../assets/images/favicon1.jpeg";
 import "./NavBar.css";
 
 const Navbar = () => {
@@ -16,30 +16,20 @@ const Navbar = () => {
   const [openPopover, setOpenPopover] = useState(false);
   const isAuth = isAuthenticated();
   const { me, currentUserId } = React.useContext(UserContext);
-  const { openPost, handleClickNew, handleFlagModal } =
+  const { openPost, handleClickNew, handleFlagModal, handleStudentModal } =
     React.useContext(myContext);
   const location = useLocation();
 
   return (
     <div className="gpt3__navbar">
       <div className="gpt3__navbar-links">
-        <div className="gpt3__navbar-links_logo">
-          <img src={logo} alt="Logo" />
-        </div>
+        <Link to={"/dash"}>
+          <div className="gpt3__navbar-links_logo">
+            <img src={favicon1} alt="Logo" className="rounded-circle" />
+          </div>
+        </Link>
         {isAuth && (
           <div className="gpt3__navbar-links_container">
-            <p>
-              <Link to={"/dash"}>Home</Link>
-            </p>
-            {/* <p>
-              <a href="#wgpt3">What is GPT3?</a>
-            </p>
-            <p>
-              <a href="#possibility">Open AI</a>
-            </p>
-            <p>
-              <a href="#features">Case Studies</a>
-            </p> */}
             {location.pathname === "/dash" && (
               <p>
                 <button
@@ -100,13 +90,22 @@ const Navbar = () => {
       {isAuth && (
         <>
           {me?.moderatorLevel <= 1 && (
-            <button
-              type="button"
-              className="btn btn-outline-danger mr-6"
-              onClick={handleFlagModal}
-            >
-              Flagged Comment
-            </button>
+            <>
+              <button
+                type="button"
+                class="btn btn-outline-info mr-6 flag__container"
+                onClick={handleStudentModal}
+              >
+                Assign Power
+              </button>
+              <button
+                type="button"
+                className="btn btn-outline-danger mr-6 flag__container"
+                onClick={handleFlagModal}
+              >
+                Flagged Comment
+              </button>
+            </>
           )}
           <div
             onClick={() => {
@@ -125,7 +124,13 @@ const Navbar = () => {
                 <div className="gpt3__navbar-menu_container-links text-white">
                   <p>
                     Moderator Level{" "}
-                    <span className="text-blue-300">{me?.moderatorLevel}</span>
+                    <span className="text-blue-300">
+                      {me?.moderatorLevel === 0
+                        ? "High Tier"
+                        : me?.moderatorLevel === 1
+                        ? "Medium Tier"
+                        : "Low Tier"}
+                    </span>
                   </p>
                   <p>
                     <Link to={`/u/${currentUserId}`}>Profile</Link>
@@ -177,50 +182,40 @@ const Navbar = () => {
           </div>
         </>
       )}
-      {!isAuth && (
-        <div className="gpt3__navbar-menu">
-          {toggleMenu ? (
-            <RiCloseLine
-              color="#fff"
-              size={27}
-              onClick={() => setToggleMenu(false)}
-            />
-          ) : (
-            <RiMenu3Line
-              color="#fff"
-              size={27}
-              onClick={() => setToggleMenu(true)}
-            />
-          )}
-          {toggleMenu && (
-            <div className="gpt3__navbar-menu_container scale-up-center">
-              {/* {console.log({ toggleMenu })} */}
-              <div className="gpt3__navbar-menu_container-links">
-                <p>
-                  <a href="#home">Home</a>
-                </p>
-                <p>
-                  <a href="#wgpt3">What is GPT3?</a>
-                </p>
-                <p>
-                  <a href="#possibility">Open AI</a>
-                </p>
-                <p>
-                  <a href="#features">Case Studies</a>
-                </p>
-                <p>
-                  <a href="#blog">Library</a>
-                </p>
-              </div>
 
-              <div className="gpt3__navbar-menu_container-links-sign">
-                <p>Sign in</p>
-                <button type="button">Sign up</button>
-              </div>
+      <div className="gpt3__navbar-menu">
+        {toggleMenu ? (
+          <RiCloseLine
+            color="#fff"
+            size={27}
+            onClick={() => setToggleMenu(false)}
+          />
+        ) : (
+          <RiMenu3Line
+            color="#fff"
+            size={27}
+            onClick={() => setToggleMenu(true)}
+          />
+        )}
+        {toggleMenu && (
+          <div className="gpt3__navbar-menu_container scale-up-center">
+            {/* {console.log({ toggleMenu })} */}
+            <div className="gpt3__navbar-menu_container-links">
+              <p>
+                {me?.moderatorLevel <= 1 && (
+                  <button
+                    type="button"
+                    className="btn btn-outline-danger"
+                    onClick={handleFlagModal}
+                  >
+                    Flagged Comment
+                  </button>
+                )}
+              </p>
             </div>
-          )}
-        </div>
-      )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

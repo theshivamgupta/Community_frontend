@@ -4,6 +4,7 @@ export const myContext = createContext();
 const NewPostContext = (props) => {
   const [openPost, setOpenPost] = useState(false);
   const [flagModal, setFlagModal] = useState(false);
+  const [studentModal, setStudentModal] = useState(false);
   function handleClickNew(e) {
     e.preventDefault();
     setOpenPost(!openPost);
@@ -14,9 +15,21 @@ const NewPostContext = (props) => {
     setFlagModal(!flagModal);
   }
 
+  function handleStudentModal(e) {
+    e.preventDefault();
+    setStudentModal(!studentModal);
+  }
+
   return (
     <myContext.Provider
-      value={{ openPost, handleClickNew, flagModal, handleFlagModal }}
+      value={{
+        openPost,
+        handleClickNew,
+        flagModal,
+        handleFlagModal,
+        studentModal,
+        handleStudentModal,
+      }}
     >
       {props.children}
     </myContext.Provider>
