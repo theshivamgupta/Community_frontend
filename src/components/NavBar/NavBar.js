@@ -9,9 +9,9 @@ import { UserContext } from "../../App";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import { myContext } from "../../context/NewPostContext";
 import favicon1 from "../../assets/images/favicon1.jpeg";
-import "./NavBar.css";
 import { useMutation } from "@apollo/client";
 import { LOGOUT } from "../../graphql/mutations";
+import "./NavBar.css";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -240,6 +240,32 @@ const Navbar = () => {
                   </>
                 )}
               </p>
+              {!isAuth && (
+                <div className="gpt3__navbar-menu_container-links-sign">
+                  <Link to={"/accounts/login"}>
+                    <p>Sign in</p>
+                  </Link>
+                  <Link to={"/accounts/signup"}>
+                    <button
+                      type="button"
+                      style={{
+                        padding: "0.5rem 1rem",
+                        color: "#fff",
+                        background: "#ff4820",
+                        fontWeight: 500,
+                        fontSize: "14px",
+                        lineHeight: "25px",
+                        border: "none",
+                        outline: "none",
+                        cursor: "pointer",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      Sign up
+                    </button>
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         )}
