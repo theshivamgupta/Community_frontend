@@ -221,7 +221,7 @@ const Navbar = () => {
             {/* {console.log({ toggleMenu })} */}
             <div className="gpt3__navbar-menu_container-links">
               <p>
-                {me?.moderatorLevel <= 1 && (
+                {me?.moderatorLevel <= 1 && !isAuth && (
                   <>
                     <button
                       type="button"
