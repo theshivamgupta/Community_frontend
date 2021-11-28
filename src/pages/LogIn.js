@@ -55,7 +55,7 @@ const LogIn = () => {
     try {
       await login({ variables });
     } catch (error) {
-      // console.log({ error });
+      console.log({ error });
       setError(true);
     }
   }
@@ -127,6 +127,9 @@ const LogIn = () => {
                       error={!!error}
                       helperText={error ? error.message : null}
                       InputProps={{
+                        style: {
+                          color: "#fff",
+                        },
                         endAdornment: hasPassword && (
                           <InputAdornment>
                             <Button
@@ -159,23 +162,8 @@ const LogIn = () => {
                   Log In
                 </Button>
               </form>
-              <div className={classes.orContainer}>
-                <div className={classes.orLine} />
-                <div>
-                  <Typography variant="body2" color="textSecondary">
-                    OR
-                  </Typography>
-                </div>
-                <div className={classes.orLine} />
-              </div>
+
               {/* <AuthError error={error} /> */}
-              <Button
-                fullWidth
-                color="secondary"
-                // onClick={(e) => handleForgetPass(e)}
-              >
-                <Typography variant="caption">Forgot password?</Typography>
-              </Button>
             </Card>
             <Card className={classes.signUpCard}>
               <Typography align="right" variant="body2">

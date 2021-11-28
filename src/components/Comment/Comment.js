@@ -46,7 +46,6 @@ const Comment = ({ post }) => {
       postId: post?.id,
     };
     await createComment({ variables });
-    console.log("comment added successfully");
     window.location.reload();
     window.location.reload();
   }
@@ -106,12 +105,13 @@ const Comment = ({ post }) => {
         </div>
       </div>
       <div
-        className="text-white "
+        // className=""
         style={{
           // border: "1px solid #DDDDDD",
           height: "30vh",
           padding: "10px",
           overflow: "auto",
+          backgroundColor: "#fff",
         }}
       >
         {!showPreview ? (
@@ -126,13 +126,14 @@ const Comment = ({ post }) => {
               placeholder="Write your Title... Please Press Enter twice to see changes"
               style={{
                 padding: "10px",
+                color: "#000",
               }}
             />
           </Slate>
         ) : (
           <div
             style={{
-              color: "white !important",
+              color: "black",
             }}
           >
             <ReactMarkdown
@@ -166,46 +167,12 @@ const Comment = ({ post }) => {
           </div>
         )}
       </div>
-      <CommentList
-        // {...result}
-        // subscribeToNewComments={() => {
-        //   console.log("more called");
-        //   subscribeToMore({
-        //     document: COMMENT_ADDED,
-        //     // variables: { postId: post?.id },
-        //     variables: { postId: String(post?.id) },
-        //     updateQuery: (prev, { subscriptionData }) => {
-        //       console.log("! ", prev);
-        //       console.log(subscriptionData);
-        //       if (!subscriptionData.data) return prev;
-        //       // const arr = [
-        //       //   ...prev?.getPostById?.comments,
-        //       //   subscriptionData?.data?.onCommentAdded,
-        //       // ];
-        //       // console.log(arr);
-        //       return prev;
-        //     },
-        //   });
-        // }}
-        post={post}
-      />
-      {/* {post?.comments?.map((comment) => (
-        <React.Suspense fallback={<h1>Loading...</h1>}>
-          <div className="my-4">
-            <CommentItem comment={comment} />
-          </div>
-        </React.Suspense>
-      ))} */}
+      <CommentList post={post} />
     </div>
   );
 };
 
 function CommentList({ post }) {
-  // React.useEffect(() => {
-  //   console.log("useEffect called");
-  //   subscribeToNewComments();
-  // }, []);
-
   return (
     <>
       {post?.comments?.map((comment) => (
@@ -241,13 +208,13 @@ function CommentItem({ comment }) {
       {openDialog && (
         <OptionsDialog model={comment} onClose={handleOpenDialog} />
       )}
-      <div className="flex flex-row py-6 px-4 rounded-lg bg-opacity-100 bg-gray-900">
+      <div className="flex flex-row py-6 px-4 rounded-lg bg-opacity-100 bg-gray-500">
         <div className="w-10 h-10 mr-2 flex-shrink-0">
           <Avatar src={user?.profileImage} sx={{ width: 30, height: 30 }} />
         </div>
         <div className="min-w-0 w-full">
           <div className="flex flex-col mb-4">
-            <div className="flex flex-row flex-wrap items-start justify-between text-opacity-100 text-white ">
+            <div className="flex flex-row flex-wrap items-start justify-between text-opacity-100 ">
               <div className="mr-4 font-bold text-lg">
                 {user?.firstName} {user?.lastName}
               </div>
@@ -262,17 +229,17 @@ function CommentItem({ comment }) {
                 {formatDateToNow(comment?.createdAt)}
                 <BiDotsVerticalRounded
                   size={25}
-                  className="hover:bg-gray-900 cursor-pointer"
+                  className="cursor-pointer"
                   onClick={handleOpenDialog}
                 />
               </div>
             </div>
-            <div className="my-5 max-w-prose text-base overflow-wrap break-words text-white">
+            <div className="my-5 max-w-prose text-base overflow-wrap break-words text-black">
               <ReactMarkdown
                 children={comment?.content}
                 transformImageUri={(uri) => uri}
                 rehypePlugins={[rehypeRaw]}
-                className=" text-white"
+                className="prose"
                 components={{
                   code({ node, inline, className, children, ...props }) {
                     const match = /language-(\w+)/.exec(className || "");

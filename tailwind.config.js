@@ -7,9 +7,6 @@ module.exports = {
         DEFAULT: {
           css: {
             color: "#fffff",
-            h1: {
-              color: "#fffff",
-            },
           },
         },
       },

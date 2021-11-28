@@ -72,11 +72,17 @@ export const useLoginPageStyles = makeStyles({
     display: "grid",
     alignItems: "center",
     gridTemplateColumns: "2fr 1fr",
+    borderRadius: "10px !important",
+    background: "#2f3a4b !important",
+    boxShadow: "7px 7px 27px #202733, -7px -7px 27px #3e4d63 !important",
   },
   card: {
     maxWidth: 348,
     padding: "16px 40px",
     marginBottom: 10,
+    borderRadius: "10px !important",
+    background: "#2f3a4b !important",
+    boxShadow: "7px 7px 27px #202733, -7px -7px 27px #3e4d63 !important",
   },
   section: {
     display: "grid",

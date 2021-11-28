@@ -2,7 +2,7 @@ import { Avatar } from "@mui/material";
 import React, { useState } from "react";
 import { RiMenu3Line, RiCloseLine } from "react-icons/ri";
 /* import logo from '../../logo.svg'; */
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { isAuthenticated } from "../../auth/isAuthenticated";
 import defaultImage from "../../assets/images/defaultImage.jpg";
 import { UserContext } from "../../App";
@@ -10,8 +10,11 @@ import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import { myContext } from "../../context/NewPostContext";
 import favicon1 from "../../assets/images/favicon1.jpeg";
 import "./NavBar.css";
+import { useMutation } from "@apollo/client";
+import { LOGOUT } from "../../graphql/mutations";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [toggleMenu, setToggleMenu] = useState(false);
   const [openPopover, setOpenPopover] = useState(false);
   const isAuth = isAuthenticated();
@@ -19,6 +22,21 @@ const Navbar = () => {
   const { openPost, handleClickNew, handleFlagModal, handleStudentModal } =
     React.useContext(myContext);
   const location = useLocation();
+  const [logout] = useMutation(LOGOUT, {
+    onCompleted: (data) => {
+      if (data.logout) {
+        if (typeof window !== undefined) {
+          localStorage.removeItem("access-token");
+          localStorage.removeItem("refresh-token");
+          navigate("/");
+        }
+      }
+    },
+  });
+  async function handleLogout(e) {
+    e.preventDefault();
+    await logout();
+  }
 
   return (
     <div className="gpt3__navbar">
@@ -136,7 +154,7 @@ const Navbar = () => {
                     <Link to={`/u/${currentUserId}`}>Profile</Link>
                   </p>
                   <p>
-                    <a
+                    <button
                       href="#blog"
                       className="text-white"
                       style={{
@@ -151,9 +169,10 @@ const Navbar = () => {
                         cursor: "pointer",
                         borderRadius: "5px",
                       }}
+                      onClick={handleLogout}
                     >
                       Logout
-                    </a>
+                    </button>
                   </p>
                 </div>
 
